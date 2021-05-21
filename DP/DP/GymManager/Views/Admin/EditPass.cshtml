@@ -1,0 +1,111 @@
+﻿@using GymManager.Models.Enums;
+@using System.Security.Cryptography
+@model Discount
+@{
+    var user = (User)ViewBag.User;
+    var isManager = (int)ViewBag.User.RoleId == (int)RolesEnum.Manager;
+    var roleOwner = (int)ViewBag.RoleOwner;
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/Admin.css" />
+}
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        @user.Name @user.Surname
+                    </div>
+                </div>
+                <div class="profile-userbuttons">
+                    <button class="btn btn-info btn-sm" onclick="window.location ='@Url.Action("Index","Profile")'">Panel użytkownika</button>
+                </div>
+                <hr class="profile-split-top" />
+                <div class="profile-usermenu">
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="list-group list-group-flush">
+                            <a href="@Url.Action("Index","Admin")" class="list-group-item list-group-item-action">Lista użytkowników</a>
+                            @if (isManager)
+                            {
+                            <a href="@Url.Action("AddUser", "Admin")" class="list-group-item list-group-item-action">Dodaj użytkownika</a>
+                            <a href="@Url.Action("Passes", "Admin")" class="list-group-item list-group-item-action">Panel zniżek</a>
+                            <a href="@Url.Action("AddArticle", "Admin")" class="list-group-item list-group-item-action">Dodaj artykuł</a>}
+                            <a href="@Url.Action("AddDietTP", "Admin")" class="list-group-item list-group-item-action">Dodaj plan treningowy lub dietę</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="profile-split-bottom" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                <form action="@Url.Action("EditPassP", "Admin")" method="post">
+                    <div class="form-group">
+                        <label>Nazwa zniżki</label>
+                        <input type="text" class="form-control" name="discountName" value="@Model.DiscountName" placeholder="Nazwa która będzie widoczna dla użytkowników">
+                    </div>
+                    <input type="text" name="passId" value="@Model.Id" style="display:none;">
+                    <input type="text" name="rowNumber" value="@((int)ViewBag.Row)" style="display:none;">
+                    <div class="form-group">
+                        <label>Opis zniżki</label>
+                        <input type="text" class="form-control" name="discountDescription" value="@Model.DiscountDescription" placeholder="Dokładny opis czego dotyczy zniżka">
+                    </div>
+                    <div class="form-group">
+                        <label>Wartość zniżki</label>
+                        <input type="text" class="form-control" name="discountValue" value="@Model.DiscountValue" placeholder="Procentowa wartość zniżki">
+                    </div>
+                    <div class="form-group">
+                        <label>Kod zniżkowy</label>
+                        <input type="text" class="form-control" name="discountCode" value="@Model.DiscountCode">
+                    </div>
+                    <div class="form-group row mt-2">
+                        <label for="example-date-input" class="col-2 col-form-label">Data ważności zniżki</label>
+                        <div class="col-10">
+                            <input class="form-control" name="date" type="date" value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" id="example-date-input">
+                        </div>
+                    </div>
+                    <div>Rola dla której przeznaczona jest zniżka</div>
+                    <div class="form-check d-inline m-3">
+                        <input class="form-check-input" type="radio" name="roleId" value="@((int)RolesEnum.Logged)" @(roleOwner == (int)RolesEnum.Logged ? "checked" : "" )>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Zwykły użytkownik
+                        </label>
+                    </div>
+                    <div class="form-check d-inline m-3">
+                        <input class="form-check-input" type="radio" name="roleId" value="@((int)RolesEnum.Service)" @(roleOwner == (int)RolesEnum.Service ? "checked" : "" )>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Obsługa
+                        </label>
+                    </div>
+                    <div class="form-check d-inline m-3">
+                        <input class="form-check-input" type="radio" name="roleId" value="@((int)RolesEnum.Trainer)" @(roleOwner == (int)RolesEnum.Trainer ? "checked" : "" )>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Trener
+                        </label>
+                    </div>
+                    <div class="form-check d-inline m-3">
+                        <input class="form-check-input" type="radio" name="roleId" value="@((int)RolesEnum.Secretary)" @(roleOwner == (int)RolesEnum.Secretary ? "checked" : "" )>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Sekretarka
+                        </label>
+                    </div>
+                    <div class="form-check d-inline m-3">
+                        <input class="form-check-input" type="radio" name="roleId" value="@((int)RolesEnum.Manager)" @(roleOwner == (int)RolesEnum.Manager ? "checked" : "" )>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Manager
+                        </label>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary mt-2">Zakończ edycje</button>
+                    </div>
+                    <div class="d-inline">
+                        <button class="btn btn-warning m-2" onclick="window.location.href = '@Url.Action("Index","Admin")'">Wróć</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>

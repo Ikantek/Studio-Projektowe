@@ -1,0 +1,15 @@
+﻿@section CSS{
+    <link rel="stylesheet" href="~/css/Login.css" />
+}
+<form method="post" asp-action="LogOn" asp-controller="Account">
+    <div class="container">
+        <label for="uname"><b>Nazwa użytkownika</b></label>
+        <input type="text" placeholder="Wpisz nazwe użytkownika" name="email" required>
+        <label for="psw"><b>Hasło</b></label>
+        <input type="password" placeholder="Wpisz hasło" name="password" required>
+        <button type="submit">Zaloguj</button>
+    </div>
+    <div class="container" style="background-color:#f1f1f1">
+        <button class="cancelbtn" onclick="window.location='/'">Wróć</button>
+    </div>
+</form>

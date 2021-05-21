@@ -1,0 +1,62 @@
+﻿@using System.IO;
+@using GymManager.Models.Enums;
+@{
+    var user = (User)ViewBag.User;
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/Profile.css" />
+}
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        @user.Name @user.Surname
+                    </div>
+                </div>
+                <div class="profile-userbuttons">
+                    @if (user.RoleId == (int)RolesEnum.Manager)
+                    {
+                        <button class="btn btn-danger btn-sm" onclick="window.location ='@Url.Action("Index","Admin")'">Panel Managera</button>
+                    }
+                    @if (user.RoleId == (int)RolesEnum.Trainer)
+                    {
+                        <button class="btn btn-success btn-sm" onclick="window.location ='@Url.Action("Index","Admin")'">Panel Trenera</button>
+                    }
+                </div>
+                <hr class="profile-split-top" />
+                <div class="profile-usermenu">
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="list-group list-group-flush">
+                            <a href="@Url.Action("Index","Profile")" class="list-group-item list-group-item-action">Wyniki</a>
+                            <a href="@Url.Action("Discounts","Profile")" class="list-group-item list-group-item-action">Karnety</a>
+                            <a href="@Url.Action("Diet","Profile")" class="list-group-item list-group-item-action">Dieta</a>
+                            <a href="@Url.Action("TrainingPlan","Profile")" class="list-group-item list-group-item-action">Plan Treningowy</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="profile-split-bottom" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                @if ((bool)ViewBag.FileExist)
+                {
+                    <h2 class="text-center">Twój plan treningowy:</h2>
+                    <iframe src="~/TrainingPlan/@(user.UserId).pdf" style=" width:100%; height:50rem; ">
+                    </iframe>
+                }
+                else
+                {
+                    <h2 class="text-center">Przykładowy plan treningowy:</h2>
+                    <p class="text-center">Ten plan treningowy został stworzony dla innego człowieka. Stosowanie go bez konsultacji z trenerem personalnym może skutkować problemami zdrowotnymi. W celu wykupienia własnego planu treningowego skontaktuj się z osobą będącą na recepcji.</p>
+                    <iframe src="https://fitnessplatinium.pl/content/uploads/2018/02/Plan-treningowy-Szymon-Najzer.pdf" style=" width:100%; height:50rem; ">
+                    </iframe>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>

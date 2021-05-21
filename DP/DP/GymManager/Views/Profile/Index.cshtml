@@ -1,0 +1,91 @@
+﻿@using GymManager.Models.Enums;
+@model List<List<Exercise>>
+@{
+    var user = (User)ViewBag.User;
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/Profile.css" />
+    <link rel="stylesheet" href="~/css/Table.css" />
+}
+
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        @user.Name @user.Surname
+                    </div>
+                </div>
+                <div class="profile-userbuttons">
+                    @if (user.RoleId == (int)RolesEnum.Manager)
+                    {
+                    <button class="btn btn-danger btn-sm" onclick="window.location ='@Url.Action("Index","Admin")'">Panel Managera</button>
+                    }
+                    @if (user.RoleId == (int)RolesEnum.Trainer)
+                    {
+                        <button class="btn btn-success btn-sm" onclick="window.location ='@Url.Action("Index","Admin")'">Panel Trenera</button>
+                    }
+                </div>
+                <hr class="profile-split-top" />
+                <div class="profile-usermenu">
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="list-group list-group-flush">
+                            <a href="@Url.Action("Index","Profile")" class="list-group-item list-group-item-action">Wyniki</a>
+                            <a href="@Url.Action("Discounts","Profile")" class="list-group-item list-group-item-action">Karnety</a>
+                            <a href="@Url.Action("Diet","Profile")" class="list-group-item list-group-item-action">Dieta</a>
+                            <a href="@Url.Action("TrainingPlan","Profile")" class="list-group-item list-group-item-action">Plan Treningowy</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="profile-split-bottom" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                <div class="text-center">
+                    <h4 class="display-4">Zapoznaj się z najlepszymi wynikami na naszej siłowni</h4>
+                </div>
+                <div class="button-box col-lg-12">
+                    <button class="btn btn-primary btn-sm btn-table" role="button" data-number="0">Wyciskanie na ławce poziomej</button>
+                    <button class="btn btn-secondary btn-sm btn-table" role="button" data-number="1">Martwy Ciąg</button>
+                    <button class="btn btn-primary btn-sm btn-table" role="button" data-number="2">OHP</button>
+                    <button class="btn btn-secondary btn-sm btn-table" role="button" data-number="3">Przysiad ze sztangą</button>
+                    <button class="btn btn-primary btn-sm btn-table" role="button" data-number="4">Podciąganie z ciężarem</button>
+                </div>
+                @for (var j = 0; j < Model.Count(); j++)
+                {
+                    if (Model[j].Count() != 0)
+                    {
+                        <table class="table table-exercises" data-table-id="@j" @if (j != 0) { <text> style="display:none;" </text> }>
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">L.P</th>
+                                    <th scope="col">Imie i nazwisko</th>
+                                    <th scope="col">Wynik w kilogramach</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model[j].Count(); i++)
+                                {
+                                    var lp = i + 1;
+                                    var element = Model[j].ElementAt(i);
+                                    <tr>
+                                        <th scope="row">@lp</th>
+                                        <td>@element.Username</td>
+                                        <td>@element.Result</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+                @section scripts{
+                    <script type="text/javascript" src="~/js/Table.js" asp-append-version="true"></script>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>

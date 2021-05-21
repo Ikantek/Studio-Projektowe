@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GymManager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/_Layout.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" >
+    @RenderSection("CSS", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light static-top" id="mainNav">
+            <div class="container-fluid">
+                <a class="navbar-brand js-scroll-trigger" asp-controller="Home" asp-action="Index">
+                    <h2></h2>
+                    <img class ="logo" src="~/images/logo.png">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Strona główna</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("List","Articles")">Artykuły</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index","Profile")">Panel Użytkownika</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("LogOff","Account")">Wyloguj</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/zaloguj">Zaloguj</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @if ((bool)TempData["Positive"]) { <text>alert-success</text> } else { <text>alert-danger</text> } alert-dismissible fade show text-center" role="alert">
+            <span>
+                <strong>@((string)TempData["Title"])</strong> @((string)TempData["Message"])
+                <button type="button" class="close close-button" data-dismiss="alert" aria-label="Close">
+                    <span class="float-right" aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </div>
+    }
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <!-- Site footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <h6>O projekcie</h6>
+                    <p class="text-justify">Strona została zrealizowana jako projekt zaliczeniowy na przedmiot Studio Projektowe 1. Naszym głównym celem było stworzenie portalu 
+                    internetowego służącego do zarządzania siłownią. Ponad to stworzyliśmy bibliotekę bezpieczeństwo zaimplementowaną za pomocą ACL.</p>
+                </div>
+                <div class="col-xs-6 col-md-6">
+                    <h6>Przydatne linki związane z projektem</h6>
+                    <ul class="footer-links">
+                        <li><a href="https://docs.google.com/document/d/1bv-ZqYUWZZG1Lwc6GxAH89WC60oFMIQLVG0PbI32sns/edit?usp=sharing" target="_blank">Dokumentacja projektu</a></li>
+
+                        <li><a href="https://docs.microsoft.com/pl-pl/dotnet/" target="_blank">Dokumnentacja .net</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">
+                        Copyright &copy; @DateTime.UtcNow.Year Wszystkie prawa zastrzeżone :D
+                        <b>Studio Projektowe Team</b>
+                    </p>
+                </div>
+
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <ul class="social-icons">
+                        <li><a class="facebook" target="_blank" href="#"><i class="fa fa-github"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

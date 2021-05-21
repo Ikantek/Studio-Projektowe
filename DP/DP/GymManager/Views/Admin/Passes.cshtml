@@ -1,0 +1,96 @@
+﻿@using GymManager.Models.Enums;
+@model List<Discount>; 
+@{
+    var user = (User)ViewBag.User;
+    var isManager = (int)ViewBag.User.RoleId == (int)RolesEnum.Manager;
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/Admin.css" />
+    <link rel="stylesheet" href="~/css/Table.css" />
+}
+
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        @user.Name @user.Surname
+                    </div>
+                </div>
+                <div class="profile-userbuttons">
+                    <button class="btn btn-info btn-sm" onclick="window.location ='@Url.Action("Index","Profile")'">Panel użytkownika</button>
+                </div>
+                <hr class="profile-split-top" />
+                <div class="profile-usermenu">
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="list-group list-group-flush">
+                            <a href="@Url.Action("Index","Admin")" class="list-group-item list-group-item-action">Lista użytkowników</a>
+                            @if (isManager)
+                            {
+                            <a href="@Url.Action("AddUser", "Admin")" class="list-group-item list-group-item-action">Dodaj użytkownika</a>
+                            <a href="@Url.Action("Passes", "Admin")" class="list-group-item list-group-item-action">Panel zniżek</a>
+                            <a href="@Url.Action("AddArticle", "Admin")" class="list-group-item list-group-item-action">Dodaj artykuł</a>}
+                            <a href="@Url.Action("AddDietTP", "Admin")" class="list-group-item list-group-item-action">Dodaj plan treningowy lub dietę</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="profile-split-bottom" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                <table class="table table-exercises">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">L.P</th>
+                            <th scope="col">Nazwa promocji</th>
+                            <th scope="col">Wartość zniżki</th>
+                            <th scope="col">Opis promocji</th>
+                            <th scope="col">Data ważności promocji</th>
+                            <th scope="col">Kod promocyjny</th>
+                            @if (isManager)
+                            {
+                                <th scope="col">Usuwanie promocji</th>
+                                <th scope="col">Edycja użytkownika</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            var lp = i + 1;
+                            var element = Model.ElementAt(i);
+                            <tr>
+                                <th scope="row">@lp</th>
+                                <td>@element.DiscountName</td>
+                                <td>@element.DiscountValue</td>
+                                <td>@element.DiscountDescription</td>
+                                <td>@element.ExpiryDate.ToString("dd.MM.yyyy")</td>
+                                <td>@element.DiscountCode</td>
+                                @if (isManager)
+                                {
+                                    <td>
+                                        <form method="post" asp-action="RemovePass" asp-controller="Admin">
+                                            <input type="text" name="rowNumber" value="@lp" style="display:none;">
+                                            <button class="btn btn-danger" name="passId" value="@element.Id">Usuń</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info" name="passId" value="@element.Id" onclick="window.location.href = '@Url.Action("EditPass","Admin", new { passId=element.Id})'">Edytuj</button>
+                                    </td>
+                                }
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+                <td>
+                    <button class="btn btn-dark" onclick="window.location.href = '@Url.Action("AddPass","Admin")'">Dodaj karnet</button>
+                </td>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>

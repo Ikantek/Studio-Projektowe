@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Diet\" />
+    <Folder Include="wwwroot\TrainingPlan\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Diet\14.pdf" />
+    <None Include="wwwroot\Diet\3.pdf" />
+    <None Include="wwwroot\Diet\4.pdf" />
+    <None Include="wwwroot\Diet\7.pdf" />
+    <None Include="wwwroot\TrainingPlan\10.pdf" />
+    <None Include="wwwroot\TrainingPlan\3.pdf" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+﻿@model List<List<Exercise>>
+@{
+    ViewData["Title"] = "Home Page";
+    var list = (List<User>)ViewBag.UserLists;
+}
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true"/>
+}
+<div class="text-center">
+    <h1 class="display-4">Witamy na stronie internetowej naszej siłowni</h1>
+    <p>Zapoznaj się z najlepszymi wynikami na naszej siłowni.</p>
+</div>
+<div class="button-box col-lg-12">
+        <button class="btn btn-primary btn btn-table" role="button" data-number="0">Wyciskanie na ławce poziomej</button>
+        <button class="btn btn-secondary btn btn-table" role="button" data-number="1">Martwy Ciąg</button>
+        <button class="btn btn-primary btn btn-table" role="button" data-number="2">OHP</button>
+        <button class="btn btn-secondary btn btn-table" role="button" data-number="3">Przysiad ze sztangą</button>
+        <button class="btn btn-primary btn btn-table" role="button" data-number="4">Podciąganie z zawieszonym ciężarem</button>
+    </div>
+@for (var j = 0; j<Model.Count(); j++){
+    if (Model[j].Count() != 0) {
+        <table class="table table-exercises" data-table-id="@j" @if (j != 0) { <text> style="display:none;"</text> }>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">L.P</th>
+                    <th scope="col">Imie i nazwisko</th>
+                    <th scope="col">Wynik w kilogramach</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model[j].Count(); i++)
+                {
+                    var lp = i + 1;
+                    var element = Model[j].ElementAt(i);
+                    <tr>                        
+                        <th scope="row">@lp</th>
+                        <td>@element.Username</td>
+                        <td>@element.Result</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+@section scripts{ 
+    <script type="text/javascript" src="~/js/Table.js" asp-append-version="true"></script>
+}
